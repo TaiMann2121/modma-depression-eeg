@@ -7,8 +7,6 @@ import numpy as np
 import scipy.io as sio
 import mne
 
-
-
 def load_metadata(xlsx_path):
     import pandas as pd
 
@@ -77,7 +75,9 @@ def load_subject(mat_path, meta=None, montage="GSN-HydroCel-128"):
 
     if eeg.shape[0] != 128:
         raise ValueError(f"Expected 128 channels after cleanup, got {eeg.shape[0]}")
-
+    
+    eeg = eeg * 1e-6  # microvolts -> volts
+    
     # Create Raw
     ch_names = [f"EEG{i+1}" for i in range(128)]
     info = mne.create_info(ch_names=ch_names, sfreq=sfreq, ch_types="eeg")
